@@ -5,10 +5,22 @@ import (
 	"net/http"
 )
 
-var httpGet = http.Get
+var httpClient *http.Client
+
+func getHttpClient() *http.Client {
+	if httpClient == nil {
+		httpClient = http.DefaultClient
+	}
+	return httpClient
+}
+
+func setHttpClient(client *http.Client) {
+	httpClient = client
+}
 
 func GetGoogle() ([]byte, error) {
-	resp, err := httpGet("https://google.com")
+	client := getHttpClient()
+	resp, err := client.Get("https://google.com")
 	if err != nil {
 		return nil, err
 	}
